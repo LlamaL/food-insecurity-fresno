@@ -1,4 +1,4 @@
-[
+var store =[
 {"ID":"001","name":"E & M AGUATES DISTRIBUCION","address":"3532 E WASHINGTON AVE","category":"Fruit/Produce Market","location":"3532 E WASHINGTON AVE, Fresno, CA","Lat":"36.7474847","Lng":"-119.7651494"},
 {"ID":"002","name":"1 EXPRESS SMOG / EXPRESS MARKET","address":"2626 N BLACKSTONE AVE","category":"Grocery Market","location":"2626 N BLACKSTONE AVE, Fresno, CA","Lat":"36.7746558","Lng":"-119.7902364"},
 {"ID":"003","name":"7 ELEVEN #2368-35615A","address":"2630 TULARE ST","category":"Grocery Market","location":"2630 TULARE ST, Fresno, CA","Lat":"36.7382393","Lng":"-119.7835426"},

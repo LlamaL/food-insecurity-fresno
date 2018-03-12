@@ -6,3 +6,7 @@ L.tileLayer('https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey
   .addTo(map);
 
 map.setView([36.73, -119.78], 12);
+
+for (var i = 0; i < store.length; i++) {
+	array[i]
+}

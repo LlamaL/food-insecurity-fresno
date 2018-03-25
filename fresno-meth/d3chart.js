@@ -95,7 +95,7 @@ var div = d3.select("body").append("div")
        div.transition()
          .duration(200)
          .style("opacity", .9);
-       div.html(d.label + "<br/> Price: $" + d.price + "per pure gram <br/> Purity: " + d.purity + "%")
+       div.html(d.label + "<br/> Price: $" + d.price + " per pure gram <br/> Purity: " + d.purity + "%")
          .style("left", (d3.event.pageX) + "px")
          .style("top", (d3.event.pageY - 28) + "px");
        })

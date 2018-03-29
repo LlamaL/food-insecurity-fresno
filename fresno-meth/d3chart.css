@@ -15,6 +15,10 @@
   .grid path {
     stroke-width: 0;
   }
+
+  .legend {
+    z-index: 1;
+  }
   
   .tooltip {
     position: absolute;

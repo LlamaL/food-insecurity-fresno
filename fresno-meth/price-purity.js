@@ -25,7 +25,7 @@
     .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-  d3.csv('data.csv', type, (error, data) => {
+  d3.csv('data/meth_price_purity.csv', type, (error, data) => {
     if (error) throw error;
 
     data.sort((a, b) => a.month - b.month);
@@ -171,12 +171,13 @@ function make_y_gridlines() {
       });
 
     d3.selectAll('.focus')
-      .style('opacity', 0.7);
+      .style('opacity', 0.8);
 
     d3.selectAll('.focus circle')
       .styles({
         fill: '#2B3E57',
-        stroke: '#2B3E57'
+        stroke: '#2B3E57',
+        "opacity": 1
       });
 
     d3.selectAll('.focus line')

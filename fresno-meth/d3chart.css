@@ -16,7 +16,7 @@
     stroke-width: 0;
   }
   
-  div.tooltip {
+  .tooltip {
     position: absolute;
     text-align: left;
     width: 150px;

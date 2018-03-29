@@ -7,6 +7,7 @@ div.chart-container {
     position: relative;
     height: 0;
     overflow: hidden;
+    padding-bottom: 100%;
   }
   .chart-container iframe {
     position: absolute;

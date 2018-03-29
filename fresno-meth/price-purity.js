@@ -142,13 +142,15 @@ function make_y_gridlines() {
       .attr("class", "line2")
       .attr("x",0)
       .attr("dy", "-5.1em")
-      .attr("font-size", "1.2em");
+      .attr("font-size", "1.2em")
+      .attr("font-weight", "bold");
 
     focus.append("text")
       .attr("class", "line3")
       .attr("x",0)
       .attr("dy", "-4.2em")
-      .attr("font-size", "1.2em");
+      .attr("font-size", "1.2em")
+      .attr("font-weight", "bold");
 
     
     focus.append("circle");

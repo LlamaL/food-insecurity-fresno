@@ -18,6 +18,11 @@
     stroke: lightgray;
 }
 
+  div.container-fluid {
+    display: inline-block;
+    margin: 0 10%;
+  }
+
 </style>
 </head>
 
@@ -27,6 +32,8 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
 <script src='https://npmcdn.com/babel-core@5.8.34/browser.min.js'></script>
+
+<div class = "container-fluid" id="#chart">
 <script>
 
 // set the dimensions and margins of the graph
@@ -140,15 +147,15 @@ d3.csv("data/meth_seizure_ca.csv", function(error, data) {
   // add the Y Axis
   svg.append("g")
       .attr("transform", "translate(0,0)")
-      .call(d3.axisLeft(y))
+      .call(d3.axisRight(y))
       .append("text")
       .attr("fill", "#000")
       .attr("transform", "rotate(-90)")
-      .attr("y", 6)
+      .attr("y", -26)
       .attr("dy", "0.71em")
       .attr("font-size", "2em")
       .attr("text-anchor", "end")
-      .text("Meth Product Seizured(KG)");
+      .text("Annual Seizures Weight(KG)");
 
 
 
@@ -162,7 +169,8 @@ d3.csv("data/meth_seizure_ca.csv", function(error, data) {
       .attr("class", "line1")
       .attr("x",6)
       .attr("dy", "1em")
-      .attr("font-size", 12);
+      .attr("font-size", 12)
+      .attr("font-weight","bold");
 
       focus.append("circle")
       .attr("r",4.5);
@@ -243,4 +251,5 @@ function type(d) {
     });
 
 </script>
+</div>
 </body>

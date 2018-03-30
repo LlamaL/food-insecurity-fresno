@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+<style> 
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.area {
+  fill: #F5C8B5;
+  opacity: 0.7;
+}
+
+.grid line {
+    stroke: lightgray;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- load the d3.js library -->    	
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
+<script src='https://npmcdn.com/babel-core@5.8.34/browser.min.js'></script>
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// Parse time
+var parseTime = d3.timeParse("%Y");
+var bisectDate = d3.bisector(d => d.year).left;
+var formatValue = d3.format(',.2f');
+var formatTime = d3.timeFormat("%Y");
+
+
+// set the ranges
+var x = d3.scaleTime().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+  // gridlines in x axis function
+  function make_x_gridlines() {		
+    return d3.axisBottom(x)
+        .ticks(4)
+}
+
+// gridlines in y axis function
+function make_y_gridlines() {		
+    return d3.axisLeft(y)
+        .ticks(5)
+}
+
+
+// define the area
+var area = d3.area()
+    .curve(d3.curveMonotoneX)
+    .x(function(d) { return x(d.year); })
+    .y0(height)
+    .y1(function(d) { return y(d.weight/1000); });
+
+// define the line
+var valueline = d3.line()
+    .curve(d3.curveMonotoneX)
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.weight/1000); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// add the X gridlines
+svg.append("g")			
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
+
+  // add the Y gridlines
+  svg.append("g")			
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
+
+// get the data
+d3.csv("data/meth_seizure_ca.csv", function(error, data) {
+  if (error) throw error;
+
+  // format the data
+  data.forEach(function(d) {
+      d.year = parseTime(d.year);
+      d.weight = +d.weight;
+  });
+
+  // set domain of the data
+  x.domain([parseTime("1990"), parseTime("2018")]);
+  y.domain([0, 1000]);
+
+  // add the area
+    svg.append("path")
+       .data([data])
+       .attr("class", "area")
+       .attr("d", area);
+
+  // add the valueline path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", valueline);
+
+  // add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .append("text")
+      .attr("fill", "#000")
+      .attr("x", width)
+      .attr("y", -6)
+      .attr("font-size", "2em")
+      .style("text-anchor", "end")
+      .text("Year");
+
+
+  // add the Y Axis
+  svg.append("g")
+      .attr("transform", "translate(0,0)")
+      .call(d3.axisLeft(y))
+      .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("font-size", "2em")
+      .attr("text-anchor", "end")
+      .text("Meth Product Seizured(KG)");
+
+
+
+
+  // add focus lines
+  var focus = svg.append('g')
+      .attr('class', 'focus')
+      .style('display', 'none');
+    
+      focus.append("text")
+      .attr("class", "line1")
+      .attr("x",6)
+      .attr("dy", "1em")
+      .attr("font-size", 12);
+
+      focus.append("circle")
+      .attr("r",4.5);
+
+
+    focus.append('line')
+      .classed('x', true);
+
+    focus.append('line')
+      .classed('y', true);
+
+svg.append('rect')
+  .attr('class', 'overlay')
+  .attr('width', width)
+  .attr('height', height)
+  .on('mouseover', () => focus.style('display', null))
+  .on('mouseout', () => focus.style('display', 'none'))
+  .on('mousemove', mousemove);
+
+
+d3.select('.overlay')
+  .styles({
+    fill: 'none',
+    'pointer-events': 'all'
+  });
+
+d3.selectAll('.focus')
+  .style('opacity', 0.8);
+
+d3.selectAll('.focus circle')
+  .styles({
+    fill: 'none',
+    stroke: 'black',
+  });
+
+d3.selectAll('.focus line')
+  .styles({
+    fill: 'none',
+    'stroke': 'black',
+    'stroke-width': '1.5px',
+    'stroke-dasharray': '3 3'
+  });
+
+function mousemove() {
+  const x0 = x.invert(d3.mouse(this)[0]);
+  const i = bisectDate(data, x0, 1);
+  const d0 = data[i - 1];
+  const d1 = data[i];
+  const d = x0 - d0.month > d1.month - x0 ? d1 : d0;
+  focus.attr('transform', `translate(${x(d.year)}, ${y(d.weight/1000)})`);
+  focus.select('line.x')
+    .attr('x1', 0)
+    .attr('x2', -x(d.year))
+    .attr('y1', 0)
+    .attr('y2', 0);
+
+  focus.select('line.y')
+    .attr('x1', 0)
+    .attr('x2', 0)
+    .attr('y1', 0)
+    .attr('y2', height - y(d.weight/1000));
+
+  focus.select("circle")
+    .attr("cx", 0)
+    .attr("cy", 0);
+
+  focus.select("text.line1")
+     .html(formatTime(d.year)+": "+formatValue(d.weight/1000) + "kg");
+}
+
+function type(d) {
+    d.year = parseTime(d.year);
+    d.weight = +d.weight;
+    return d;
+  }
+
+
+    });
+
+</script>
+</body>

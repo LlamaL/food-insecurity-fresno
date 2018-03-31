@@ -55,7 +55,7 @@
 <div class = "container-fluid" id="#chart">
 <script>
 
-  const margin = { top: 20, right: 50, bottom: 30, left: 50 };
+  const margin = { top: 20, right: 60, bottom: 30, left: 50 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -180,28 +180,32 @@ function make_y_gridlines() {
       .attr('class', 'focus')
       .style('display', 'none');
 
+      focus.append("rect");
+
     
     focus.append("text")
       .attr("class", "line1")
-      .attr("x",-2)
-      .attr("dy", "-6em")
+      .attr("x",6)
+      .attr("y", 30)
       .attr("font-size", "1.2em")
       .attr("font-weight", "bold");
     
     focus.append("text")
       .attr("class", "line2")
-      .attr("x",-2)
-      .attr("dy", "-5.1em")
-      .attr("font-size", "1.2em")
+      .attr("x",6)
+      .attr("y", 45)
+      .attr("font-size", "1.2em");
 
     focus.append("text")
       .attr("class", "line3")
-      .attr("x",-2)
-      .attr("dy", "-4.2em")
-      .attr("font-size", "1.2em")
+      .attr("x",6)
+      .attr("y", 60)
+      .attr("fontcolor", "white")
+      .attr("font-size", "1.2em");
 
     
     focus.append("circle");
+
 
     svg.append('rect')
       .attr('class', 'overlay')
@@ -227,6 +231,14 @@ function make_y_gridlines() {
         stroke: '#2B3E57',
         "opacity": 1
       });
+
+    d3.selectAll('.focus rect')
+      .styles({
+        fill: 'lightgrey',
+        stroke: 'lightgrey',
+        'opacity': 0.6,
+        "radius": 6
+        });
 
     d3.selectAll('.focus line')
       .styles({
@@ -259,6 +271,12 @@ function make_y_gridlines() {
         .attr("cx", 0)
         .attr("cy", 0)
         .attr("r", (d.purity-80)*1.3+2);
+      
+      focus.select("rect")
+         .attr("x",-4)
+         .attr("y",15)
+         .attr("width", 150)
+         .attr("height", 50);
 
       focus.select("text.line1")
          .html(d.label);
@@ -268,6 +286,9 @@ function make_y_gridlines() {
 
       focus.select("text.line3")
          .html("Purity: " + d.purity + "%");
+    
+
+
 
     }
   });

@@ -236,7 +236,6 @@ function make_y_gridlines() {
       .styles({
         fill: 'lightgrey',
         stroke: 'lightgrey',
-        "radius": 6
         });
 
     d3.selectAll('.focus line')
@@ -275,7 +274,9 @@ function make_y_gridlines() {
          .attr("x",-4)
          .attr("y",25)
          .attr("width", 150)
-         .attr("height", 50);
+         .attr("height", 50)
+         .attr("rx",6)
+         .attr("ry",6);
 
       focus.select("text.line1")
          .html(d.label);

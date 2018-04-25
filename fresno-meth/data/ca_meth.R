@@ -13,4 +13,8 @@ ca_meth <- national_meth %>%
 glimpse(ca_meth)
 
 #Sum for different years
-ca_meth_year <- aggregate(ca_meth$`Nt Wt`, list(year = ca_meth$`Seize Year`), sum)
+ca_meth_year <- aggregate(ca_meth$`Nt Wt`, 
+                          list(year = ca_meth$`Seize Year`), sum)
+
+#write csv out
+write_csv(ca_meth_year, "meth_seizure_ca.csv", na="")
